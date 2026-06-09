@@ -1,6 +1,9 @@
 const router = require('express').Router();
+const auth = require('../middleware/auth');
+const adminAuth = require('../middleware/adminAuth');
+const bookController = require('../controllers/bookController');
 
-// TODO: 由组员B实现以下接口
+// TODO: 由组员B实现以下接口（取消注释前需确保 controller 中已实现对应函数）
 // router.get('/', bookController.getBooks);
 // router.get('/hot', bookController.getHotBooks);
 // router.get('/new', bookController.getNewBooks);

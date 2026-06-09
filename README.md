@@ -162,7 +162,7 @@ library-management-system/
 │       │   ├── user.js       #   组员A
 │       │   ├── book.js       #   组员B
 │       │   ├── record.js     #   组员C
-│       │   ├── category.js   #   组员A
+│       │   ├── category.js   #   组员B
 │       │   ├── message.js    #   组员A
 │       │   ├── stats.js      #   组员C
 │       │   └── config.js     #   组员A
@@ -200,8 +200,8 @@ library-management-system/
 | `server/routes/configRoutes.js` | 去掉 TODO 注释，引入 controller 并绑定路由 |
 | `client/src/api/user.js` | 写前端调后端接口的请求函数 |
 | `client/src/api/message.js` | 写消息相关请求函数 |
-| `client/src/api/category.js` | 写分类相关请求函数 |
-| `client/src/api/config.js` | 写系统参数请求函数 |
+| `client/src/api/category.js` | 写分类相关请求函数 | 组员B |
+| `client/src/api/config.js` | 写系统参数请求函数 | 组员A |
 | `client/src/views/user/` | 创建登录页、注册页、个人中心、用户管理页 |
 | `client/src/views/message/` | 创建消息列表页 |
 

@@ -1,6 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
 const routes = [
+  // 根路径重定向到首页（组员B实现首页后取消注释）
+  { path: '/', redirect: '/books' },
+
   // TODO: 组员B - 首页
   // { path: '/', name: 'Home', component: () => import('@/views/book/HomePage.vue') },
 
