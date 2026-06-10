@@ -7,9 +7,9 @@ const routes = [
   // TODO: 组员B - 首页
   // { path: '/', name: 'Home', component: () => import('@/views/book/HomePage.vue') },
 
-  // TODO: 组员A - 登录/注册
-  // { path: '/login', name: 'Login', component: () => import('@/views/user/LoginPage.vue') },
-  // { path: '/register', name: 'Register', component: () => import('@/views/user/RegisterPage.vue') },
+  // 登录/注册
+  { path: '/login', name: 'Login', component: () => import('@/views/user/LoginPage.vue') },
+  { path: '/register', name: 'Register', component: () => import('@/views/user/RegisterPage.vue') },
   // { path: '/profile', name: 'Profile', component: () => import('@/views/user/ProfilePage.vue') },
   // { path: '/messages', name: 'Messages', component: () => import('@/views/message/MessageList.vue') },
 
