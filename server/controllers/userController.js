@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const Record = require('../models/Record');
+const Message = require('../models/Message');
 
 // 注册
 exports.register = async (req, res) => {
@@ -82,6 +83,9 @@ exports.login = async (req, res) => {
       process.env.JWT_SECRET || 'default_secret',
       { expiresIn: '7d' }
     );
+
+    // 异步生成提醒消息（不阻塞登录）
+    generateReminders(user._id);
 
     res.json({
       code: 200,
@@ -280,6 +284,94 @@ exports.resetPassword = async (req, res) => {
     res.json({ code: 200, message: '密码已重置', data: null });
   } catch (err) {
     console.error('重置密码失败:', err);
+    res.status(500).json({ code: 500, message: '服务器内部错误', data: null });
+  }
+};
+
+// ===== 消息生成逻辑（接口文档 4.7 节） =====
+
+// 生成逾期提醒和到期提醒（登录时触发）
+async function generateReminders(userId) {
+  try {
+    const now = new Date();
+    const threeDaysLater = new Date(now.getTime() + 3 * 24 * 60 * 60 * 1000);
+
+    // 查找逾期图书（borrowed 且 dueDate < now）
+    const overdueRecords = await Record.find({
+      userId,
+      status: 'borrowed',
+      dueDate: { $lt: now }
+    }).populate('bookId', 'title');
+
+    for (const record of overdueRecords) {
+      const existing = await Message.findOne({
+        userId,
+        type: 'overdue_remind',
+        relatedRecordId: record._id
+      });
+      if (!existing) {
+        const daysOverdue = Math.floor((now - record.dueDate) / (24 * 60 * 60 * 1000));
+        await Message.create({
+          userId,
+          type: 'overdue_remind',
+          title: '图书逾期提醒',
+          content: `您借阅的《${record.bookId?.title || '未知图书'}》已逾期 ${daysOverdue} 天，请尽快归还。`,
+          relatedBookId: record.bookId?._id,
+          relatedRecordId: record._id
+        });
+      }
+    }
+
+    // 查找即将到期图书（borrowed 且 dueDate 在3天内且 dueDate > now）
+    const dueSoonRecords = await Record.find({
+      userId,
+      status: 'borrowed',
+      dueDate: { $gt: now, $lte: threeDaysLater }
+    }).populate('bookId', 'title');
+
+    for (const record of dueSoonRecords) {
+      const existing = await Message.findOne({
+        userId,
+        type: 'due_remind',
+        relatedRecordId: record._id
+      });
+      if (!existing) {
+        await Message.create({
+          userId,
+          type: 'due_remind',
+          title: '图书到期提醒',
+          content: `您借阅的《${record.bookId?.title || '未知图书'}》将于 ${record.dueDate.toLocaleDateString('zh-CN')} 到期，请及时归还或续借。`,
+          relatedBookId: record.bookId?._id,
+          relatedRecordId: record._id
+        });
+      }
+    }
+  } catch (err) {
+    console.error('生成提醒消息失败:', err);
+  }
+}
+
+// 生成预约到书通知（供组员C的还书接口调用）
+exports.createReserveNotify = async (req, res) => {
+  try {
+    const { recordId } = req.body;
+    const record = await Record.findById(recordId).populate('bookId', 'title');
+    if (!record) {
+      return res.status(404).json({ code: 404, message: '记录不存在', data: null });
+    }
+
+    await Message.create({
+      userId: record.userId,
+      type: 'reserve_notify',
+      title: '预约到书通知',
+      content: `您预约的《${record.bookId?.title || '未知图书'}》已归还，请尽快到馆借阅（24小时内有效）。`,
+      relatedBookId: record.bookId?._id,
+      relatedRecordId: record._id
+    });
+
+    res.json({ code: 200, message: '预约通知已发送', data: null });
+  } catch (err) {
+    console.error('发送预约通知失败:', err);
     res.status(500).json({ code: 500, message: '服务器内部错误', data: null });
   }
 };

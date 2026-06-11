@@ -23,7 +23,10 @@ const routes = [
 
   // 管理后台
   { path: '/admin/users', name: 'AdminUsers', component: () => import('@/views/user/UserManage.vue') },
-  // { path: '/admin/configs', name: 'AdminConfigs', component: () => import('@/views/user/ConfigPage.vue') },
+  { path: '/admin/configs', name: 'AdminConfigs', component: () => import('@/views/user/ConfigPage.vue') },
+
+  // 消息中心
+  { path: '/messages', name: 'Messages', component: () => import('@/views/message/MessageList.vue') },
 ];
 
 const router = createRouter({

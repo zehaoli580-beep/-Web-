@@ -13,4 +13,7 @@ router.get('/', auth, adminAuth, userController.getUsers);
 router.put('/:id/status', auth, adminAuth, userController.updateUserStatus);
 router.put('/:id/reset-password', auth, adminAuth, userController.resetPassword);
 
+// 消息通知（供组员C还书接口调用）
+router.post('/reserve-notify', auth, adminAuth, userController.createReserveNotify);
+
 module.exports = router;
