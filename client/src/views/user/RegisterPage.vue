@@ -119,7 +119,7 @@ const handleRegister = async () => {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-color: #f5f7fa;
+  background-color: #e8f4f8;
 }
 .register-card {
   width: 460px;
