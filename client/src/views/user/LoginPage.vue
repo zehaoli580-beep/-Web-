@@ -58,7 +58,7 @@ const handleLogin = async () => {
     userStore.setToken(res.data.token);
     userStore.setUserInfo(res.data.user);
     ElMessage.success('登录成功');
-    router.push('/');
+    router.push('/profile');
   } catch (err) {
     const msg = err.response?.data?.message || '登录失败，请稍后重试';
     ElMessage.error(msg);

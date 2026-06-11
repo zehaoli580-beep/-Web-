@@ -10,7 +10,7 @@ const routes = [
   // 登录/注册
   { path: '/login', name: 'Login', component: () => import('@/views/user/LoginPage.vue') },
   { path: '/register', name: 'Register', component: () => import('@/views/user/RegisterPage.vue') },
-  // { path: '/profile', name: 'Profile', component: () => import('@/views/user/ProfilePage.vue') },
+  { path: '/profile', name: 'Profile', component: () => import('@/views/user/ProfilePage.vue') },
   // { path: '/messages', name: 'Messages', component: () => import('@/views/message/MessageList.vue') },
 
   // TODO: 组员B - 图书
@@ -21,8 +21,8 @@ const routes = [
   // { path: '/admin/records', name: 'AdminRecords', component: () => import('@/views/record/RecordManage.vue') },
   // { path: '/admin/stats', name: 'AdminStats', component: () => import('@/views/record/StatsDashboard.vue') },
 
-  // TODO: 组员A - 管理后台
-  // { path: '/admin/users', name: 'AdminUsers', component: () => import('@/views/user/UserManage.vue') },
+  // 管理后台
+  { path: '/admin/users', name: 'AdminUsers', component: () => import('@/views/user/UserManage.vue') },
   // { path: '/admin/configs', name: 'AdminConfigs', component: () => import('@/views/user/ConfigPage.vue') },
 ];
 
