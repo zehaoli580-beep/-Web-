@@ -4,8 +4,120 @@
   box-sizing: border-box;
 }
 
+:root {
+  --primary-color: #5c7a99;
+  --primary-light: #7a94b3;
+  --primary-dark: #4a6580;
+  --primary-gradient: linear-gradient(135deg, #5c7a99 0%, #7a94b3 100%);
+  
+  --success-color: #7ba57b;
+  --warning-color: #c9a87c;
+  --danger-color: #b87575;
+  --info-color: #6b9dc4;
+  
+  --bg-primary: #f0f2f5;
+  --bg-secondary: #e8ebeb;
+  --bg-card: #ffffff;
+  
+  --text-primary: #3d454d;
+  --text-secondary: #6b757d;
+  --text-muted: #9ca6ae;
+  
+  --border-color: #d4d9dc;
+  --border-light: #e6eaed;
+  
+  --shadow-sm: 0 1px 3px rgba(92, 122, 153, 0.08);
+  --shadow-md: 0 4px 12px rgba(92, 122, 153, 0.1);
+  --shadow-lg: 0 8px 24px rgba(92, 122, 153, 0.12);
+  
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.25s ease;
+  --transition-slow: 0.35s ease;
+}
+
+[data-theme="dark"] {
+  --bg-primary: #2a2e35;
+  --bg-secondary: #32373e;
+  --bg-card: #32373e;
+  
+  --text-primary: #e8e8e8;
+  --text-secondary: #9ca6ae;
+  --text-muted: #6b757d;
+  
+  --border-color: #4a5259;
+  --border-light: #3a3f45;
+}
+
 body {
   font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Microsoft YaHei', sans-serif;
   -webkit-font-smoothing: antialiased;
-  color: #333;
+  color: var(--text-primary);
+  background: 
+    linear-gradient(135deg, rgba(92, 122, 153, 0.03) 0%, transparent 50%),
+    linear-gradient(225deg, rgba(122, 148, 179, 0.02) 0%, transparent 50%),
+    var(--bg-primary);
+  background-size: 40px 40px;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+}
+
+.page-container {
+  min-height: 100vh;
+  transition: background-color var(--transition-normal);
+}
+
+.card-wrapper {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  transition: all var(--transition-normal);
+}
+
+.card-wrapper:hover {
+  box-shadow: var(--shadow-lg);
+}
+
+.page-transition-enter-active,
+.page-transition-leave-active {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.page-transition-enter-from {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.page-transition-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--border-light);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--text-muted);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
 }

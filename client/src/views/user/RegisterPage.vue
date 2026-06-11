@@ -118,25 +118,112 @@ const handleRegister = async () => {
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100%;
+  height: 100vh;
   min-height: 100vh;
-  background-color: #e8f4f8;
+  background: 
+    radial-gradient(ellipse at 20% 20%, rgba(92, 122, 153, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, rgba(122, 148, 179, 0.06) 0%, transparent 50%),
+    linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+  padding: 20px;
+  box-sizing: border-box;
 }
+
+@keyframes bgMove {
+  0% { background-position: 0 0; }
+  100% { background-position: 60px 60px; }
+}
+
 .register-card {
   width: 460px;
-  padding: 20px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 32px;
+  background: var(--bg-card);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border-light);
+  animation: cardFadeIn 0.5s ease;
 }
+
+@keyframes cardFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .title {
   text-align: center;
-  margin-bottom: 24px;
-  color: #303133;
+  margin-bottom: 28px;
+  color: var(--text-primary);
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: 2px;
 }
+
 .footer {
   text-align: center;
-  color: #909399;
+  color: var(--text-secondary);
   font-size: 14px;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-light);
 }
+
 .footer a {
-  color: #409eff;
+  color: var(--primary-color);
   text-decoration: none;
+  font-weight: 500;
+  transition: color var(--transition-fast);
+}
+
+.footer a:hover {
+  color: var(--primary-dark);
+}
+
+:deep(.el-input__wrapper) {
+  border-radius: var(--radius-md);
+  border-color: var(--border-color);
+  transition: all var(--transition-fast);
+}
+
+:deep(.el-input__wrapper:hover) {
+  border-color: var(--primary-light);
+}
+
+:deep(.el-input__wrapper.is-focus) {
+  box-shadow: 0 0 0 3px rgba(74, 111, 165, 0.1);
+  border-color: var(--primary-color);
+}
+
+:deep(.el-select .el-input__wrapper) {
+  border-radius: var(--radius-md);
+}
+
+:deep(.el-button--primary) {
+  border-radius: var(--radius-md);
+  background: var(--primary-gradient);
+  border: none;
+  height: 44px;
+  font-weight: 500;
+  transition: all var(--transition-fast);
+}
+
+:deep(.el-button--primary:hover) {
+  box-shadow: 0 4px 12px rgba(74, 111, 165, 0.3);
+  transform: translateY(-1px);
+}
+
+:deep(.el-button--primary:active) {
+  transform: translateY(0);
+}
+
+:deep(.el-form-item) {
+  margin-bottom: 16px;
 }
 </style>

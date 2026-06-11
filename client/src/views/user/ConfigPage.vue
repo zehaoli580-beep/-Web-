@@ -68,12 +68,87 @@ onMounted(() => {
 
 <style scoped>
 .config-page {
-  max-width: 800px;
-  margin: 20px auto;
-  padding: 0 20px;
+  width: 100%;
+  height: 100vh;
+  min-height: 100vh;
+  padding: 30px 20px;
+  background-color: var(--bg-primary);
+  box-sizing: border-box;
 }
-.card-header {
+
+.config-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-light);
+}
+
+:deep(.el-card__header) {
+  border-bottom: 1px solid var(--border-light);
+  padding: 16px 20px;
+}
+
+.card-title {
   font-size: 18px;
-  font-weight: bold;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+:deep(.el-card__body) {
+  padding: 20px;
+}
+
+:deep(.el-table) {
+  font-size: 13px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+:deep(.el-table thead tr) {
+  background: var(--border-light);
+}
+
+:deep(.el-table th) {
+  color: var(--text-secondary);
+  font-weight: 500;
+  padding: 12px 16px;
+}
+
+:deep(.el-table td) {
+  padding: 12px 16px;
+}
+
+:deep(.el-table tr:hover > td) {
+  background: rgba(74, 111, 165, 0.05) !important;
+}
+
+:deep(.el-table--striped .el-table__body tr.el-table__row--striped) {
+  background: rgba(74, 111, 165, 0.03);
+}
+
+:deep(.el-button--primary) {
+  border-radius: var(--radius-md);
+  background: var(--primary-gradient);
+  border: none;
+}
+
+:deep(.el-button--primary:hover) {
+  box-shadow: 0 4px 12px rgba(74, 111, 165, 0.3);
+}
+
+:deep(.el-button) {
+  border-radius: var(--radius-md);
+}
+
+:deep(.el-input-number) {
+  border-radius: var(--radius-md);
+}
+
+:deep(.el-input-number .el-input__wrapper) {
+  border-radius: var(--radius-md);
+}
+
+:deep(.el-input__wrapper) {
+  border-radius: var(--radius-md);
 }
 </style>

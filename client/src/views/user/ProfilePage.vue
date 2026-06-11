@@ -1,69 +1,88 @@
 <template>
   <div class="profile-page">
-    <el-card class="profile-card">
-      <template #header>
-        <div class="card-header">
-          <span>个人中心</span>
-          <div>
-            <el-button type="primary" size="small" @click="openEditDialog">修改信息</el-button>
-            <el-button size="small" @click="openPasswordDialog">修改密码</el-button>
+    <div class="profile-layout">
+      <aside class="profile-sidebar">
+        <div class="sidebar-header">
+          <div class="avatar-wrapper">
+            <div class="avatar">
+              <span>{{ userInfo.name?.charAt(0) || '?' }}</span>
+            </div>
+            <div class="user-name">{{ userInfo.name }}</div>
+            <el-tag :type="userInfo.role === 'admin' ? 'danger' : 'primary'" size="small" class="role-tag">
+              {{ roleMap[userInfo.role] || userInfo.role }}
+            </el-tag>
           </div>
         </div>
-      </template>
-
-      <el-descriptions :column="1" border>
-        <el-descriptions-item label="学号">{{ userInfo.username }}</el-descriptions-item>
-        <el-descriptions-item label="姓名">{{ userInfo.name }}</el-descriptions-item>
-        <el-descriptions-item label="身份">
-          <el-tag :type="userInfo.role === 'admin' ? 'danger' : 'primary'" size="small">
-            {{ roleMap[userInfo.role] || userInfo.role }}
-          </el-tag>
-        </el-descriptions-item>
-        <el-descriptions-item label="学院">{{ userInfo.college }}</el-descriptions-item>
-        <el-descriptions-item label="手机号">{{ userInfo.phone || '未填写' }}</el-descriptions-item>
-        <el-descriptions-item label="邮箱">{{ userInfo.email || '未填写' }}</el-descriptions-item>
-        <el-descriptions-item label="当前借阅">{{ userInfo.borrowCount }} 本</el-descriptions-item>
-        <el-descriptions-item label="账号状态">
-          <el-tag :type="userInfo.status === 'active' ? 'success' : 'danger'" size="small">
-            {{ userInfo.status === 'active' ? '正常' : '已禁用' }}
-          </el-tag>
-        </el-descriptions-item>
-        <el-descriptions-item label="注册时间">{{ formatDate(userInfo.createdAt) }}</el-descriptions-item>
-      </el-descriptions>
-    </el-card>
-
-    <!-- 借阅记录 -->
-    <el-card class="records-card">
-      <template #header>
-        <div class="card-header">
-          <span>我的借阅记录</span>
+        
+        <div class="sidebar-stats">
+          <div class="stat-item">
+            <div class="stat-value">{{ userInfo.borrowCount }}</div>
+            <div class="stat-label">当前借阅</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">{{ userInfo.status === 'active' ? '正常' : '禁用' }}</div>
+            <div class="stat-label">账号状态</div>
+          </div>
         </div>
-      </template>
 
-      <el-tabs v-model="activeTab" @tab-change="fetchRecords">
-        <el-tab-pane label="借阅中" name="borrowed"></el-tab-pane>
-        <el-tab-pane label="已归还" name="returned"></el-tab-pane>
-        <el-tab-pane label="全部" name=""></el-tab-pane>
-      </el-tabs>
+        <div class="sidebar-actions">
+          <el-button type="primary" size="small" block @click="openEditDialog">修改信息</el-button>
+          <el-button size="small" block @click="openPasswordDialog">修改密码</el-button>
+        </div>
+      </aside>
 
-      <el-table :data="records" v-loading="recordsLoading" stripe empty-text="暂无借阅记录">
-        <el-table-column label="书名" prop="bookTitle" min-width="180" />
-        <el-table-column label="借书日期" width="110">
-          <template #default="{ row }">{{ formatDate(row.borrowDate) }}</template>
-        </el-table-column>
-        <el-table-column label="应还日期" width="110">
-          <template #default="{ row }">{{ formatDate(row.dueDate) }}</template>
-        </el-table-column>
-        <el-table-column label="状态" width="90">
-          <template #default="{ row }">
-            <el-tag :type="statusType[row.status]" size="small">{{ statusMap[row.status] }}</el-tag>
+      <main class="profile-content">
+        <el-card class="info-card">
+          <template #header>
+            <span class="card-title">基本信息</span>
           </template>
-        </el-table-column>
-        <el-table-column label="罚款" width="70">
-          <template #default="{ row }">{{ row.fine ? '¥' + row.fine : '-' }}</template>
-        </el-table-column>
-      </el-table>
-    </el-card>
+
+          <el-descriptions :column="2" border size="small">
+            <el-descriptions-item label="学号">{{ userInfo.username }}</el-descriptions-item>
+            <el-descriptions-item label="姓名">{{ userInfo.name }}</el-descriptions-item>
+            <el-descriptions-item label="身份">
+              <el-tag :type="userInfo.role === 'admin' ? 'danger' : 'primary'" size="small">
+                {{ roleMap[userInfo.role] || userInfo.role }}
+              </el-tag>
+            </el-descriptions-item>
+            <el-descriptions-item label="学院">{{ userInfo.college }}</el-descriptions-item>
+            <el-descriptions-item label="手机号">{{ userInfo.phone || '未填写' }}</el-descriptions-item>
+            <el-descriptions-item label="邮箱">{{ userInfo.email || '未填写' }}</el-descriptions-item>
+            <el-descriptions-item label="注册时间" :span="2">{{ formatDate(userInfo.createdAt) }}</el-descriptions-item>
+          </el-descriptions>
+        </el-card>
+
+        <el-card class="records-card">
+          <template #header>
+            <span class="card-title">我的借阅记录</span>
+          </template>
+
+          <el-tabs v-model="activeTab" @tab-change="fetchRecords" class="records-tabs">
+            <el-tab-pane label="借阅中" name="borrowed"></el-tab-pane>
+            <el-tab-pane label="已归还" name="returned"></el-tab-pane>
+            <el-tab-pane label="全部" name=""></el-tab-pane>
+          </el-tabs>
+
+          <el-table :data="records" v-loading="recordsLoading" stripe empty-text="暂无借阅记录" class="records-table">
+            <el-table-column label="书名" prop="bookTitle" min-width="180" />
+            <el-table-column label="借书日期" width="110">
+              <template #default="{ row }">{{ formatDate(row.borrowDate) }}</template>
+            </el-table-column>
+            <el-table-column label="应还日期" width="110">
+              <template #default="{ row }">{{ formatDate(row.dueDate) }}</template>
+            </el-table-column>
+            <el-table-column label="状态" width="90">
+              <template #default="{ row }">
+                <el-tag :type="statusType[row.status]" size="small">{{ statusMap[row.status] }}</el-tag>
+              </template>
+            </el-table-column>
+            <el-table-column label="罚款" width="70">
+              <template #default="{ row }">{{ row.fine ? '¥' + row.fine : '-' }}</template>
+            </el-table-column>
+          </el-table>
+        </el-card>
+      </main>
+    </div>
 
     <!-- 修改信息弹窗 -->
     <el-dialog v-model="editDialogVisible" title="修改个人信息" width="420px">
@@ -228,18 +247,187 @@ onMounted(() => {
 
 <style scoped>
 .profile-page {
-  max-width: 700px;
-  margin: 30px auto;
-  padding: 0 20px;
+  width: 100%;
+  height: 100vh;
+  min-height: 100vh;
+  padding: 30px 20px;
+  background-color: var(--bg-primary);
+  box-sizing: border-box;
 }
-.card-header {
+
+.profile-layout {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 18px;
-  font-weight: bold;
+  gap: 24px;
+  height: calc(100vh - 60px);
 }
+
+.profile-sidebar {
+  width: 280px;
+  flex-shrink: 0;
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.sidebar-header {
+  padding: 24px;
+  background: linear-gradient(135deg, #5c7a99 0%, #7a94b3 50%, #8a9eb8 100%);
+  text-align: center;
+}
+
+.avatar-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+  font-size: 32px;
+  color: #fff;
+  font-weight: 600;
+}
+
+.user-name {
+  font-size: 20px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.role-tag {
+  background: rgba(255, 255, 255, 0.25) !important;
+  border: none !important;
+  color: #fff !important;
+}
+
+.sidebar-stats {
+  display: flex;
+  padding: 20px;
+  gap: 16px;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.stat-item {
+  flex: 1;
+  text-align: center;
+}
+
+.stat-value {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.sidebar-actions {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.profile-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  overflow-y: auto;
+}
+
+.info-card,
 .records-card {
-  margin-top: 20px;
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-light);
+}
+
+.card-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+:deep(.el-card__header) {
+  border-bottom: 1px solid var(--border-light);
+  padding: 16px 20px;
+}
+
+:deep(.el-card__body) {
+  padding: 20px;
+}
+
+.records-tabs {
+  margin-bottom: 16px;
+}
+
+:deep(.el-tabs__header) {
+  margin-bottom: 0;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border-light);
+}
+
+:deep(.el-tabs__item) {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+:deep(.el-tabs__item.is-active) {
+  color: var(--primary-color);
+}
+
+:deep(.el-table) {
+  font-size: 13px;
+}
+
+:deep(.el-table thead tr) {
+  background: var(--border-light);
+}
+
+:deep(.el-table th) {
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+:deep(.el-table tr:hover > td) {
+  background: rgba(74, 111, 165, 0.05) !important;
+}
+
+:deep(.el-button--primary) {
+  border-radius: var(--radius-md);
+}
+
+:deep(.el-button) {
+  border-radius: var(--radius-md);
+}
+
+@media (max-width: 768px) {
+  .profile-layout {
+    flex-direction: column;
+  }
+  
+  .profile-sidebar {
+    width: 100%;
+  }
 }
 </style>
