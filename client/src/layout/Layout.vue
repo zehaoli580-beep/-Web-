@@ -31,6 +31,12 @@
           <span class="icon">📚</span>
           <span>图书管理</span>
         </el-menu-item>
+
+        <!-- 统计模块 -->
+        <el-menu-item index="/stats">
+          <span class="icon">📊</span>
+          <span>统计模块</span>
+        </el-menu-item>
       </el-menu>
     </el-aside>
 

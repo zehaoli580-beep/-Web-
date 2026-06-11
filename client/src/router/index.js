@@ -24,6 +24,9 @@ import MessageList from '../views/message/MessageList.vue'
 // 系统设置
 import ConfigManage from '../views/config/ConfigManage.vue'
 
+// 统计模块（管理员功能）- 4.4.1~4.4.4
+import StatsOverview from '../views/stats/StatsOverview.vue'
+
 const routes = [
   // 登录页面
   {
@@ -174,6 +177,20 @@ const routes = [
         path: '',
         name: 'ConfigManage',
         component: ConfigManage
+      }
+    ]
+  },
+
+  // 统计模块（管理员功能）- 4.4.1~4.4.4
+  {
+    path: '/stats',
+    component: Layout,
+    meta: { requiresAuth: true },
+    children: [
+      {
+        path: '',
+        name: 'StatsOverview',
+        component: StatsOverview
       }
     ]
   }
