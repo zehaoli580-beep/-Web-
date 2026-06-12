@@ -14,7 +14,7 @@
             <a href="#home" class="nav-link" @click.prevent="scrollTo('#home')">首页</a>
             <a href="#team" class="nav-link" @click.prevent="scrollTo('#team')">团队分工</a>
             <a href="#tech" class="nav-link" @click.prevent="scrollTo('#tech')">技术介绍</a>
-            <a href="/books" class="nav-link nav-enter">进入系统</a>
+            <a href="/app/home" class="nav-link nav-enter">进入系统</a>
           </nav>
           <div class="nav-right">
             <a href="/login" class="nav-link login-link">登录</a>
@@ -28,7 +28,7 @@
         <h1 class="hero-title">高校图书管理系统</h1>
         <p class="hero-subtitle">便捷的图书检索 · 高效的借阅管理 · 智能的数据统计</p>
         <div class="hero-buttons">
-          <a href="/books" class="btn btn-primary">进入系统</a>
+          <a href="/app/home" class="btn btn-primary">进入系统</a>
           <a href="#team" class="btn btn-outline" @click.prevent="scrollTo('#team')">了解更多 ↓</a>
         </div>
       </div>

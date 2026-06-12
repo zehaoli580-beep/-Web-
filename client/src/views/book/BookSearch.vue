@@ -44,7 +44,7 @@
       <!-- 图书列表 -->
       <el-row :gutter="20" v-else-if="books.length > 0">
         <el-col :xs="12" :sm="8" :md="6" :lg="6" v-for="book in books" :key="book._id">
-          <div class="book-card" @click="$router.push(`/books/${book._id}`)">
+          <div class="book-card" @click="$router.push(`/app/books/${book._id}`)">
             <div class="book-cover">
               <img :src="book.cover || DEFAULT_COVER" :alt="book.title" @error="onImgError">
             </div>

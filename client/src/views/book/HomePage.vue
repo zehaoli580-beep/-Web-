@@ -29,11 +29,11 @@
         <section class="section">
           <div class="section-header">
             <h2 class="section-title">🔥 热门图书排行榜</h2>
-            <router-link to="/books?sort=hot" class="more-link">查看更多 →</router-link>
+            <router-link to="/app/books?sort=hot" class="more-link">查看更多 →</router-link>
           </div>
           <el-row :gutter="20" v-if="hotBooks.length > 0">
             <el-col :xs="12" :sm="8" :md="6" :lg="4.8" v-for="(book, index) in hotBooks" :key="book._id">
-              <div class="book-card" @click="$router.push(`/books/${book._id}`)">
+              <div class="book-card" @click="$router.push(`/app/books/${book._id}`)">
                 <div class="rank-badge" :class="'rank-' + (index + 1)">{{ index + 1 }}</div>
                 <div class="book-cover">
                   <img :src="book.cover || DEFAULT_COVER" :alt="book.title" @error="onImgError">
@@ -58,11 +58,11 @@
         <section class="section">
           <div class="section-header">
             <h2 class="section-title">🆕 新书上架</h2>
-            <router-link to="/books?sort=new" class="more-link">查看更多 →</router-link>
+            <router-link to="/app/books?sort=new" class="more-link">查看更多 →</router-link>
           </div>
           <el-row :gutter="20" v-if="newBooks.length > 0">
             <el-col :xs="12" :sm="8" :md="6" :lg="4.8" v-for="book in newBooks" :key="book._id">
-              <div class="book-card" @click="$router.push(`/books/${book._id}`)">
+              <div class="book-card" @click="$router.push(`/app/books/${book._id}`)">
                 <div class="book-cover">
                   <img :src="book.cover || DEFAULT_COVER" :alt="book.title" @error="onImgError">
                 </div>
