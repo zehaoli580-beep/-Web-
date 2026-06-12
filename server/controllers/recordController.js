@@ -109,7 +109,6 @@ exports.returnBook = async (req, res) => {
 
     // 计算逾期
     if (returnDate > record.dueDate) {
-      status = 'overdue';
       const days = Math.ceil((returnDate - record.dueDate) / (1000 * 60 * 60 * 24));
       const config = await Config.findOne();
       const finePerDay = config?.finePerDay || 0.1;
@@ -118,7 +117,7 @@ exports.returnBook = async (req, res) => {
 
     // 更新记录
     record.returnDate = returnDate;
-    record.status = status;
+    record.status = 'returned';
     record.fine = fine;
     await record.save();
 
@@ -129,7 +128,9 @@ exports.returnBook = async (req, res) => {
 
     // 恢复用户借阅数
     const user = await User.findById(record.userId);
-    user.borrowCount -= 1;
+    if (user.borrowCount > 0) {
+      user.borrowCount -= 1;
+    }
     await user.save();
 
     // 预约通知

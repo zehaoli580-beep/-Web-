@@ -24,7 +24,7 @@ const routes = [
 
   // ===== 借阅模块（组员C） =====
   { path: '/admin/records', name: 'AdminRecords', component: () => import('@/views/record/RecordManage.vue'), meta: { requiresAdmin: true } },
-  { path: '/admin/stats', name: 'AdminStats', component: () => import('@/views/record/StatsDashboard.vue'), meta: { requiresAdmin: true } },
+  { path: '/admin/stats', name: 'AdminStats', component: () => import('@/views/stats/StatsOverview.vue'), meta: { requiresAdmin: true } },
 
   // ===== 404 =====
   { path: '/:pathMatch(.*)*', redirect: '/' }

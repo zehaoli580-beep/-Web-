@@ -256,7 +256,7 @@ const getOverdueDays = (dueDate) => {
 
 const calculateFine = (dueDate) => {
   const days = getOverdueDays(dueDate);
-  return days * 0.5;
+  return days * 0.1;
 };
 
 onMounted(() => {

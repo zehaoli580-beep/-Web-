@@ -6,7 +6,7 @@ const recordSchema = new mongoose.Schema({
   borrowDate: { type: Date },
   dueDate: { type: Date },
   returnDate: { type: Date },
-  status: { type: String, enum: ['borrowed', 'returned', 'overdue', 'reserved'], default: 'reserved' },
+  status: { type: String, enum: ['borrowed', 'returned', 'overdue', 'reserved', 'pending'], default: 'reserved' },
   renewed: { type: Boolean, default: false },
   fine: { type: Number, default: 0 },
   reserveOrder: { type: Number },
