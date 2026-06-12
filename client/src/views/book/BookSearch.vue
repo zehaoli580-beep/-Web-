@@ -4,10 +4,10 @@
     <header class="navbar">
       <div class="nav-inner">
         <div class="nav-left">
-          <h1 class="logo" @click="$router.push('/')">📚 高校图书管理系统</h1>
+          <h1 class="logo" @click="$router.push('/app')">📚 高校图书管理系统</h1>
         </div>
         <div class="nav-right">
-          <router-link to="/" class="nav-link">首页</router-link>
+          <router-link to="/" class="nav-link">官网首页</router-link>
           <router-link v-if="userStore.isAdmin" to="/admin/books" class="nav-link">图书管理</router-link>
           <router-link v-if="userStore.isAdmin" to="/admin/categories" class="nav-link">分类管理</router-link>
           <template v-if="userStore.isLoggedIn">

@@ -4,10 +4,10 @@
     <header class="navbar">
       <div class="nav-inner">
         <div class="nav-left">
-          <h1 class="logo" @click="$router.push('/')">📚 高校图书管理系统</h1>
+          <h1 class="logo" @click="$router.push('/app')">📚 高校图书管理系统</h1>
         </div>
         <div class="nav-right">
-          <router-link to="/" class="nav-link">首页</router-link>
+          <router-link to="/" class="nav-link">官网首页</router-link>
           <router-link to="/books" class="nav-link">图书检索</router-link>
           <template v-if="userStore.isLoggedIn">
             <span class="user-info">{{ userStore.userInfo?.name || userStore.userInfo?.username }}</span>

@@ -4,7 +4,7 @@
       <div class="header-inner">
         <h1>📚 图书管理</h1>
         <div class="header-right">
-          <el-button @click="$router.push('/')">返回首页</el-button>
+          <el-button @click="$router.push('/app')">返回首页</el-button>
           <el-button type="primary" @click="openAddDialog">+ 新增图书</el-button>
         </div>
       </div>
