@@ -15,16 +15,16 @@ const routes = [
   // 用户模块（组员A）
   { path: '/login', name: 'Login', component: () => import('@/views/user/LoginPage.vue') },
   { path: '/register', name: 'Register', component: () => import('@/views/user/RegisterPage.vue') },
+  { path: '/profile', name: 'Profile', component: () => import('@/views/user/ProfilePage.vue') },
+  { path: '/messages', name: 'Messages', component: () => import('@/views/message/MessageList.vue') },
 
-  // 组员A 其他页面
-  // { path: '/profile', name: 'Profile', component: () => import('@/views/user/ProfilePage.vue') },
-  // { path: '/messages', name: 'Messages', component: () => import('@/views/message/MessageList.vue') },
-  // { path: '/admin/users', name: 'AdminUsers', component: () => import('@/views/user/UserManage.vue') },
-  // { path: '/admin/configs', name: 'AdminConfigs', component: () => import('@/views/user/ConfigPage.vue') },
+  // 用户管理后台（组员A，管理员）
+  { path: '/admin/users', name: 'AdminUsers', component: () => import('@/views/user/UserManage.vue'), meta: { requiresAdmin: true } },
+  { path: '/admin/configs', name: 'AdminConfigs', component: () => import('@/views/user/ConfigPage.vue'), meta: { requiresAdmin: true } },
 
   // 借阅模块（组员C）
-  // { path: '/admin/records', name: 'AdminRecords', component: () => import('@/views/record/RecordManage.vue') },
-  // { path: '/admin/stats', name: 'AdminStats', component: () => import('@/views/record/StatsDashboard.vue') },
+  // { path: '/admin/records', name: 'AdminRecords', component: () => import('@/views/record/RecordManage.vue'), meta: { requiresAdmin: true } },
+  // { path: '/admin/stats', name: 'AdminStats', component: () => import('@/views/record/StatsDashboard.vue'), meta: { requiresAdmin: true } },
 
   // 404 → 首页
   { path: '/:pathMatch(.*)*', redirect: '/' }
