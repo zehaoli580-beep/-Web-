@@ -1,27 +1,5 @@
 <template>
   <div class="book-search-page">
-    <!-- 导航栏 -->
-    <header class="navbar">
-      <div class="nav-inner">
-        <div class="nav-left">
-          <h1 class="logo" @click="$router.push('/app')">📚 高校图书管理系统</h1>
-        </div>
-        <div class="nav-right">
-          <router-link to="/" class="nav-link">官网首页</router-link>
-          <router-link v-if="userStore.isAdmin" to="/admin/books" class="nav-link">图书管理</router-link>
-          <router-link v-if="userStore.isAdmin" to="/admin/categories" class="nav-link">分类管理</router-link>
-          <template v-if="userStore.isLoggedIn">
-            <span class="user-info">{{ userStore.userInfo?.name || userStore.userInfo?.username }}</span>
-            <el-button size="small" type="danger" plain @click="handleLogout">退出</el-button>
-          </template>
-          <template v-else>
-            <el-button size="small" @click="$router.push('/login')">登录</el-button>
-            <el-button size="small" type="primary" @click="$router.push('/register')">注册</el-button>
-          </template>
-        </div>
-      </div>
-    </header>
-
     <!-- 搜索区 -->
     <div class="search-bar">
       <div class="search-inner">
@@ -97,24 +75,18 @@
         />
       </div>
     </div>
-
-    <footer class="footer">
-      <p>© 2026 高校图书管理系统 · 课程设计项目</p>
-    </footer>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { useUserStore } from '@/store/user';
 import { getBooks } from '@/api/book';
 import { getCategories } from '@/api/category';
 import { Search } from '@element-plus/icons-vue';
 
 const route = useRoute();
 const router = useRouter();
-const userStore = useUserStore();
 
 const DEFAULT_COVER = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjE4MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTIwIiBoZWlnaHQ9IjE4MCIgZmlsbD0iI2U4ZThlOCIvPjx0ZXh0IHg9IjYwIiB5PSI5MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjOTk5IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7lm77niYflnLDlnYA8L3RleHQ+PC9zdmc+';
 

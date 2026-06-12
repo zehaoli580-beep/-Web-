@@ -1,28 +1,5 @@
 <template>
   <div class="home-page">
-    <!-- 导航栏 -->
-    <header class="navbar">
-      <div class="nav-inner">
-        <div class="nav-left">
-          <h1 class="logo" @click="$router.push('/app')">📚 高校图书管理系统</h1>
-        </div>
-        <div class="nav-right">
-          <router-link to="/books" class="nav-link">图书检索</router-link>
-          <router-link v-if="userStore.isAdmin" to="/admin/books" class="nav-link">图书管理</router-link>
-          <router-link v-if="userStore.isAdmin" to="/admin/categories" class="nav-link">分类管理</router-link>
-          <template v-if="userStore.isLoggedIn">
-            <span class="user-info">{{ userStore.userInfo?.name || userStore.userInfo?.username }}</span>
-            <el-button size="small" type="danger" plain @click="handleLogout">退出</el-button>
-          </template>
-          <template v-else>
-            <el-button size="small" @click="$router.push('/login')">登录</el-button>
-            <el-button size="small" type="primary" @click="$router.push('/register')">注册</el-button>
-          </template>
-        </div>
-      </div>
-    </header>
-
-    <!-- 主内容 -->
     <main class="main-content">
       <!-- Hero 搜索区 -->
       <section class="hero-section">
@@ -106,23 +83,16 @@
         </section>
       </div>
     </main>
-
-    <!-- 页脚 -->
-    <footer class="footer">
-      <p>© 2026 高校图书管理系统 · 课程设计项目</p>
-    </footer>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { useUserStore } from '@/store/user';
 import { getHotBooks, getNewBooks } from '@/api/book';
 import { Search } from '@element-plus/icons-vue';
 
 const router = useRouter();
-const userStore = useUserStore();
 
 const DEFAULT_COVER = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjE4MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTIwIiBoZWlnaHQ9IjE4MCIgZmlsbD0iI2U4ZThlOCIvPjx0ZXh0IHg9IjYwIiB5PSI5MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjOTk5IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7lm77niYflnLDlnYA8L3RleHQ+PC9zdmc+';
 
@@ -136,13 +106,8 @@ function onImgError(e) {
 
 function handleSearch() {
   if (searchKeyword.value.trim()) {
-    router.push(`/books?keyword=${encodeURIComponent(searchKeyword.value.trim())}`);
+    router.push(`/app/books?keyword=${encodeURIComponent(searchKeyword.value.trim())}`);
   }
-}
-
-function handleLogout() {
-  userStore.logout();
-  router.push('/');
 }
 
 onMounted(async () => {
@@ -163,53 +128,7 @@ onMounted(async () => {
 .home-page {
   min-height: 100vh;
   background: #f5f7fa;
-}
-
-/* 导航栏 */
-.navbar {
-  background: #fff;
-  border-bottom: 1px solid #e4e7ed;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
-.nav-inner {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.logo {
-  font-size: 18px;
-  cursor: pointer;
-  color: #409eff;
-  white-space: nowrap;
-}
-.nav-right {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-.nav-link {
-  color: #333;
-  text-decoration: none;
-  font-size: 14px;
-  padding: 6px 12px;
-  border-radius: 4px;
-  transition: background 0.2s;
-}
-.nav-link:hover {
-  background: #ecf5ff;
-  color: #409eff;
-}
-.user-info {
-  font-size: 14px;
-  color: #606266;
-  margin-right: 4px;
+  padding: 24px;
 }
 
 /* Hero 区 */
