@@ -37,6 +37,12 @@
           <span class="icon">📊</span>
           <span>统计模块</span>
         </el-menu-item>
+
+        <!-- 系统参数 -->
+        <el-menu-item index="/config">
+          <span class="icon">⚙️</span>
+          <span>系统参数</span>
+        </el-menu-item>
       </el-menu>
     </el-aside>
 
