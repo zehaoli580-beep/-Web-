@@ -12,7 +12,7 @@ mongoose.connect(process.env.MONGODB_URI)
     // 创建预设管理员
     const adminExists = await User.findOne({ username: 'admin' });
     if (!adminExists) {
-      const hashedPassword = await bcrypt.hash('admin123', 10);
+      const hashedPassword = await bcrypt.hash('123456', 10);
       await User.create({
         username: 'admin',
         password: hashedPassword,
@@ -21,9 +21,12 @@ mongoose.connect(process.env.MONGODB_URI)
         college: '图书馆',
         status: 'active'
       });
-      console.log('✅ 预设管理员已创建 (admin / admin123)');
+      console.log('✅ 预设管理员已创建 (admin / 123456)');
     } else {
-      console.log('ℹ️ 管理员账号已存在，跳过');
+      // 如果管理员已存在，更新密码为 123456
+      const hashedPassword = await bcrypt.hash('123456', 10);
+      await User.updateOne({ username: 'admin' }, { password: hashedPassword });
+      console.log('✅ 管理员密码已更新为 123456');
     }
 
     // 创建预设系统参数
