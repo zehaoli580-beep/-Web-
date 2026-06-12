@@ -9,27 +9,28 @@
             <a href="#home" class="nav-link" @click.prevent="scrollTo('#home')">首页</a>
             <a href="#team" class="nav-link" @click.prevent="scrollTo('#team')">团队分工</a>
             <a href="#tech" class="nav-link" @click.prevent="scrollTo('#tech')">技术介绍</a>
-            <a href="/books" class="nav-link nav-enter">🏠 进入系统</a>
-            <a href="/login" class="nav-link login-link">登录</a>
+            <a href="/books" class="nav-link nav-enter">进入系统</a>
           </nav>
+          <div class="nav-right">
+            <a href="/login" class="nav-link login-link">登录</a>
+          </div>
         </div>
       </header>
 
       <div class="hero-overlay"></div>
 
       <div class="hero-content">
-        <div class="hero-badge">📖 课程设计项目</div>
         <h1 class="hero-title">高校图书管理系统</h1>
         <p class="hero-subtitle">便捷的图书检索 · 高效的借阅管理 · 智能的数据统计</p>
         <div class="hero-buttons">
-          <a href="/books" class="btn btn-primary">🏠 进入系统</a>
+          <a href="/books" class="btn btn-primary">进入系统</a>
           <a href="#team" class="btn btn-outline" @click.prevent="scrollTo('#team')">了解更多 ↓</a>
         </div>
       </div>
 
       <!-- 底部滚动提示 -->
       <div class="scroll-hint" @click="scrollTo('#team')">
-        <span>向下滚动</span>
+        <span>SCROLL</span>
         <div class="scroll-arrow">↓</div>
       </div>
     </section>
@@ -285,15 +286,18 @@ html {
   left: 0;
   right: 0;
   z-index: 100;
-  padding: 16px 40px;
-  background: rgba(0, 0, 0, 0.2);
+  padding: 0 40px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.25);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   transition: all 0.4s ease;
   border-bottom: 1px solid transparent;
 }
 .navbar.scrolled {
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(12px);
   box-shadow: 0 2px 20px rgba(0,0,0,0.08);
   border-bottom: 1px solid rgba(0,0,0,0.05);
@@ -318,6 +322,7 @@ html {
 }
 
 .nav-inner {
+  width: 100%;
   max-width: 1200px;
   margin: 0 auto;
   display: flex;
@@ -325,44 +330,94 @@ html {
   justify-content: space-between;
 }
 .nav-logo {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 700;
   color: #fff;
   transition: color 0.3s;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 2px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }
 .nav-link {
-  color: rgba(255,255,255,0.85);
+  color: rgba(255,255,255,0.8);
   text-decoration: none;
   font-size: 14px;
-  padding: 8px 16px;
+  padding: 8px 18px;
   border-radius: 6px;
   transition: all 0.25s;
   cursor: pointer;
+  position: relative;
+}
+/* 导航项下滑线动画 */
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  transform: translateX(-50%) scaleX(0);
+  width: 60%;
+  height: 2px;
+  background: #409eff;
+  border-radius: 1px;
+  transition: transform 0.3s ease;
+}
+.nav-link:hover::after {
+  transform: translateX(-50%) scaleX(1);
 }
 .nav-link:hover {
-  background: rgba(255,255,255,0.15);
   color: #fff;
 }
+.navbar.scrolled .nav-link:hover::after {
+  background: #409eff;
+}
+.navbar.scrolled .nav-link:hover {
+  color: #409eff;
+}
+
 .nav-enter {
-  background: rgba(64,158,255,0.35);
-  color: #fff;
+  background: linear-gradient(135deg, #409eff, #337ecc);
+  color: #fff !important;
   font-weight: 600;
-  margin-left: 8px;
+  margin-left: 12px;
+  box-shadow: 0 2px 12px rgba(64,158,255,0.3);
 }
 .nav-enter:hover {
-  background: #409eff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(64,158,255,0.4);
+}
+.nav-enter::after {
+  display: none !important;
+}
+
+.nav-right {
+  flex-shrink: 0;
 }
 .login-link {
   border: 1px solid rgba(255,255,255,0.4);
+  padding: 6px 20px;
+  border-radius: 20px;
+  font-size: 13px;
+  transition: all 0.3s;
 }
 .login-link:hover {
   border-color: #fff;
   background: rgba(255,255,255,0.12);
+  color: #fff;
+}
+.login-link::after {
+  display: none !important;
+}
+.navbar.scrolled .login-link:hover {
+  border-color: #409eff;
+  background: rgba(64,158,255,0.06);
+  color: #409eff;
 }
 
 /* ===== Hero 内容 ===== */
@@ -917,9 +972,12 @@ html {
   .team-grid { grid-template-columns: 1fr; }
   .tech-grid { grid-template-columns: 1fr 1fr; }
   .flip-card { height: 320px; }
-  .nav-inner { flex-direction: column; gap: 10px; }
-  .nav-links { flex-wrap: wrap; justify-content: center; }
+  .navbar { padding: 0 16px; }
+  .nav-inner { flex-wrap: wrap; gap: 8px; }
+  .nav-links { position: static; transform: none; gap: 0; }
+  .nav-link { font-size: 13px; padding: 6px 10px; }
   .hero-buttons { flex-direction: column; align-items: center; }
+  .nav-enter { margin-left: 4px; }
 }
 
 @media (max-width: 480px) {
