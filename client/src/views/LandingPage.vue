@@ -2,7 +2,12 @@
   <div class="landing-page">
     <!-- ===== Hero 全屏背景区 ===== -->
     <section class="hero-section" id="home">
-      <header class="navbar" :class="{ 'scrolled': scrolled }">
+      <header
+        class="navbar"
+        :class="{ 'scrolled': scrolled, 'navbar-hover': navbarHover }"
+        @mouseenter="navbarHover = true"
+        @mouseleave="navbarHover = false"
+      >
         <div class="nav-inner">
           <div class="nav-logo">📚 高校图书管理系统</div>
           <nav class="nav-links">
@@ -148,6 +153,7 @@
 import { ref, onMounted } from 'vue';
 
 const scrolled = ref(false);
+const navbarHover = ref(false);
 
 function scrollTo(selector) {
   const el = document.querySelector(selector);
@@ -279,7 +285,7 @@ html {
   z-index: 1;
 }
 
-/* ===== 导航栏 ===== */
+/* ===== 导航栏（高级毛玻璃效果） ===== */
 .navbar {
   position: fixed;
   top: 0;
@@ -287,30 +293,49 @@ html {
   right: 0;
   z-index: 100;
   padding: 0 40px;
-  height: 64px;
+  height: 68px;
   display: flex;
   align-items: center;
-  background: rgba(0, 0, 0, 0.25);
+  background: rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  transition: all 0.4s ease;
-  border-bottom: 1px solid transparent;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
 }
+
+/* 鼠标悬浮导航栏 → 更透亮 */
+.navbar-hover {
+  background: rgba(255, 255, 255, 0.15) !important;
+  backdrop-filter: blur(18px) !important;
+  -webkit-backdrop-filter: blur(18px) !important;
+  border-bottom-color: rgba(255,255,255,0.12) !important;
+}
+.navbar-hover .nav-logo {
+  text-shadow: 0 2px 12px rgba(0,0,0,0.3);
+}
+
+/* 滚动到内容区 */
 .navbar.scrolled {
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(12px);
-  box-shadow: 0 2px 20px rgba(0,0,0,0.08);
-  border-bottom: 1px solid rgba(0,0,0,0.05);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 2px 24px rgba(0,0,0,0.06);
+  border-bottom-color: rgba(0,0,0,0.04);
 }
+.navbar.scrolled.navbar-hover {
+  background: rgba(255, 255, 255, 0.96) !important;
+  backdrop-filter: blur(20px) !important;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.1) !important;
+}
+
 .navbar.scrolled .nav-logo {
   color: #303133;
+  text-shadow: none;
 }
 .navbar.scrolled .nav-link:not(.nav-enter):not(.login-link) {
   color: #606266;
 }
 .navbar.scrolled .nav-link:not(.nav-enter):not(.login-link):hover {
   color: #409eff;
-  background: rgba(64,158,255,0.08);
 }
 .navbar.scrolled .login-link {
   border-color: #dcdfe6;
@@ -333,91 +358,127 @@ html {
   font-size: 18px;
   font-weight: 700;
   color: #fff;
-  transition: color 0.3s;
+  transition: color 0.3s, text-shadow 0.3s;
   white-space: nowrap;
   flex-shrink: 0;
+  text-shadow: 0 1px 8px rgba(0,0,0,0.15);
 }
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 2px;
+  gap: 6px;
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
 }
+
+/* ===== 导航选项（毛玻璃+光晕） ===== */
 .nav-link {
-  color: rgba(255,255,255,0.8);
+  color: rgba(255,255,255,0.85);
   text-decoration: none;
   font-size: 14px;
-  padding: 8px 18px;
-  border-radius: 6px;
-  transition: all 0.25s;
+  font-weight: 500;
+  padding: 8px 20px;
+  border-radius: 10px;
   cursor: pointer;
   position: relative;
-}
-/* 导航项下滑线动画 */
-.nav-link::after {
-  content: '';
-  position: absolute;
-  bottom: 2px;
-  left: 50%;
-  transform: translateX(-50%) scaleX(0);
-  width: 60%;
-  height: 2px;
-  background: #409eff;
-  border-radius: 1px;
-  transition: transform 0.3s ease;
-}
-.nav-link:hover::after {
-  transform: translateX(-50%) scaleX(1);
-}
-.nav-link:hover {
-  color: #fff;
-}
-.navbar.scrolled .nav-link:hover::after {
-  background: #409eff;
-}
-.navbar.scrolled .nav-link:hover {
-  color: #409eff;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  letter-spacing: 0.5px;
+  background: transparent;
+  border: 1px solid transparent;
 }
 
+/* 悬浮 → 毛玻璃底座 + 边框 + 光晕 */
+.nav-link:hover {
+  color: #fff;
+  background: rgba(255,255,255,0.12);
+  border-color: rgba(255,255,255,0.25);
+  box-shadow:
+    0 0 24px rgba(255,255,255,0.06),
+    inset 0 1px 0 rgba(255,255,255,0.1);
+  transform: translateY(-1px);
+}
+/* 右上角光斑装饰 */
+.nav-link:hover::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  right: -1px;
+  width: 44px;
+  height: 44px;
+  background: radial-gradient(circle at top right, rgba(255,255,255,0.18), transparent 70%);
+  border-radius: 0 10px 0 0;
+  pointer-events: none;
+}
+
+/* 白底滚动后的悬浮 */
+.navbar.scrolled .nav-link:hover {
+  color: #409eff;
+  background: rgba(64,158,255,0.08);
+  border-color: rgba(64,158,255,0.2);
+  box-shadow: 0 0 24px rgba(64,158,255,0.06);
+}
+.navbar.scrolled .nav-link:hover::before {
+  background: radial-gradient(circle at top right, rgba(64,158,255,0.1), transparent 70%);
+}
+
+/* 进入系统按钮 */
 .nav-enter {
-  background: linear-gradient(135deg, #409eff, #337ecc);
+  background: linear-gradient(135deg, rgba(64,158,255,0.2), rgba(51,126,204,0.2));
+  border-color: rgba(64,158,255,0.3);
   color: #fff !important;
   font-weight: 600;
   margin-left: 12px;
-  box-shadow: 0 2px 12px rgba(64,158,255,0.3);
+  backdrop-filter: blur(4px);
 }
 .nav-enter:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 20px rgba(64,158,255,0.4);
+  background: linear-gradient(135deg, #409eff, #337ecc) !important;
+  border-color: #409eff !important;
+  box-shadow:
+    0 4px 28px rgba(64,158,255,0.35),
+    inset 0 1px 0 rgba(255,255,255,0.15) !important;
+  transform: translateY(-2px) !important;
 }
-.nav-enter::after {
-  display: none !important;
+.nav-enter:hover::before { display: none !important; }
+
+.navbar.scrolled .nav-enter {
+  background: linear-gradient(135deg, #409eff, #337ecc);
+  border-color: transparent;
+  box-shadow: 0 2px 12px rgba(64,158,255,0.25);
+}
+.navbar.scrolled .nav-enter:hover {
+  box-shadow: 0 6px 28px rgba(64,158,255,0.4) !important;
+  transform: translateY(-2px) !important;
 }
 
 .nav-right {
   flex-shrink: 0;
 }
+
+/* 登录按钮 — 圆环 */
 .login-link {
-  border: 1px solid rgba(255,255,255,0.4);
-  padding: 6px 20px;
+  border: 1.5px solid rgba(255,255,255,0.35);
+  padding: 6px 22px;
   border-radius: 20px;
   font-size: 13px;
-  transition: all 0.3s;
+  font-weight: 500;
+  transition: all 0.35s;
+  letter-spacing: 0.5px;
+  color: rgba(255,255,255,0.85);
 }
 .login-link:hover {
   border-color: #fff;
-  background: rgba(255,255,255,0.12);
-  color: #fff;
+  background: rgba(255,255,255,0.1);
+  color: #fff !important;
+  box-shadow: 0 0 20px rgba(255,255,255,0.05);
+  transform: translateY(-1px);
 }
-.login-link::after {
-  display: none !important;
-}
+.login-link:hover::before { display: none !important; }
 .navbar.scrolled .login-link:hover {
   border-color: #409eff;
   background: rgba(64,158,255,0.06);
-  color: #409eff;
+  color: #409eff !important;
+  box-shadow: 0 0 20px rgba(64,158,255,0.08);
 }
 
 /* ===== Hero 内容 ===== */
